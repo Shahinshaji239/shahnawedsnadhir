@@ -230,11 +230,9 @@ html.invitation-covered .petal-layer { display: none; }
   transform-origin: 50% 38%;
 }
 .hero::before { transform: scale(var(--portrait-scale, 1)); }
-.portrait-dateline { margin-top: 1.1rem; font: italic 1rem Georgia, serif; text-align: center; }
 @media (max-width: 720px) {
   .portrait-mount { top: 43%; right: 6%; width: min(42vw, 32svh); }
   .hero-title { align-self: end; padding-bottom: 2rem; }
-  .portrait-dateline { font-size: .78rem; }
   .hero-title .hero-names { font-size: clamp(3.6rem, 12vw, 5.4rem); }
   .hero-title .overline { max-width: 15em; }
 }
