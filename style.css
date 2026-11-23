@@ -548,3 +548,41 @@ html.invitation-covered .petal-layer { display: none; }
   cursor: pointer;
 }
 .invitation-covered .music-toggle { display: none; }
+
+.venue-card a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7em;
+  text-transform: uppercase;
+}
+.map-pin {
+  position: relative;
+  display: inline-block;
+  width: 1.12em;
+  height: 1.12em;
+  border: 1.6px solid currentColor;
+  border-radius: 50% 50% 50% 0;
+  transform: translateY(-.12em) rotate(-45deg);
+}
+.map-pin::after {
+  content: "";
+  position: absolute;
+  inset: 26%;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+@media (max-width: 600px) {
+  .rolling-letter:not(.letter-complete) .letter-cylinder {
+    margin-top: .75rem;
+    overflow: hidden;
+    border-block: 1px solid #a982572e;
+    mask-image: linear-gradient(transparent, black 17%, black 83%, transparent);
+  }
+  .rolling-letter:not(.letter-complete) .letter-line {
+    padding-inline: .25rem;
+    letter-spacing: -.022em;
+    text-wrap: balance;
+  }
+  .rolling-letter:not(.letter-complete) .family-letter h2 { margin-bottom: .15em; }
+}

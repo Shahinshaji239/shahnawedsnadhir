@@ -174,7 +174,8 @@ const familySection = main.querySelector('.family');
 const familyPanel = familySection.querySelector('.family-letter');
 const cylinder = familyPanel.querySelector('.letter-cylinder');
 const letterLines = [...cylinder.querySelectorAll('.letter-line')];
-const stepAngle = Math.PI / 6;
+const phoneLetter = window.matchMedia('(max-width: 600px)');
+let stepAngle = Math.PI / 6;
 let cylinderRadius = 0;
 
 function sizeCylinder() {
@@ -182,7 +183,8 @@ function sizeCylinder() {
   familySection.classList.toggle('rolling-letter', !reducedMotion.matches);
   if (!reducedMotion.matches) {
     const tallestLine = Math.max(...letterLines.map(line => line.offsetHeight));
-    cylinderRadius = (tallestLine + 8) / Math.sin(stepAngle);
+    stepAngle = phoneLetter.matches ? Math.PI / 3 : Math.PI / 6;
+    cylinderRadius = (tallestLine + (phoneLetter.matches ? 16 : 8)) / Math.sin(stepAngle);
     cylinder.style.height = Math.ceil(cylinderRadius * 2.3) + 'px';
     familySection.style.setProperty('--reading-distance', ((letterLines.length - 1) * 15 + 55) + 'svh');
   } else {
@@ -209,7 +211,7 @@ function turnLetter() {
     const angle = (index - position) * stepAngle;
     // Only the front half of the cylinder faces the reader.
     const front = Math.abs(angle) < Math.PI / 2;
-    line.style.opacity = front ? String(Math.cos(angle) ** 1.4) : '0';
+    line.style.opacity = front ? String(Math.cos(angle) ** (phoneLetter.matches ? 3 : 1.4)) : '0';
     if (!front) return;
     const y = Math.sin(angle) * cylinderRadius;
     const z = (Math.cos(angle) - 1) * cylinderRadius;
