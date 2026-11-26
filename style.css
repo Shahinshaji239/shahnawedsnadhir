@@ -309,60 +309,44 @@ html.invitation-covered .petal-layer { display: none; }
   grid-template-columns: minmax(0, 1fr);
 }
 .family.section {
-  background: linear-gradient(105deg,#eee0c9,#fbf3e5 42%,#fff8ed);
-  text-align: left;
+  padding: 0; align-content: stretch; align-items: stretch; text-align: left;
+  background: #faf2e5;
 }
 .family-letter {
-  display: grid;
-  grid-template-columns: minmax(0, .8fr) minmax(0, 1.3fr);
-  gap: clamp(2.2rem, 7vw, 9rem);
-  align-items: center;
+  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.2fr);
 }
-.letter-masthead { color: var(--wine); padding-block: 1.5rem; align-self: center; }
-.family .letter-masthead h2 { margin: .38em 0 .25em; font-size: clamp(3.4rem, 6.8vw, 8rem); }
-.letter-masthead h2 em { display: block; }
-.letter-masthead time { font: italic clamp(1rem,1.4vw,1.3rem) Georgia,serif; }
-.letter-postage {
-  position: relative; width: fit-content; padding: .65rem 2rem .5rem .3rem;
+.letter-masthead {
+  position: relative; isolation: isolate; overflow: hidden; display: flex;
+  flex-direction: column; justify-content: space-between;
+  padding: clamp(2rem,5vw,6rem); color: #ffefd7;
+  background: radial-gradient(ellipse at 85% 25%,#74374a,#512238 58%,#381c2d);
 }
-.monogram-stamp {
-  display: block; width: clamp(5rem,9vw,10rem); aspect-ratio: 4/5;
-  background: #fff7e7; padding: .55rem;
-  mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
-    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.8px) -4px -4px / 8px 8px;
-  transform: rotate(-6deg);
+.letter-masthead::before {
+  content: ""; position: absolute; inset: .8rem; pointer-events: none;
+  border: 1px solid #d0a97666;
 }
-.monogram-stamp::before {
-  content: "SN"; display: grid; place-items: center; height: 100%;
-  border: 3px double #cfac77; background: #61233a; color: #f1d59f;
-  font: italic clamp(1.6rem,4vw,4.5rem)/1 'Cormorant Garamond',Georgia,serif;
-  letter-spacing: -.12em; padding-right: .12em;
+.letter-masthead time {
+  align-self: flex-start; padding-bottom: .8rem; border-bottom: 1px solid #c7a17399;
+  font: italic clamp(1rem,1.5vw,1.4rem) Georgia,serif; color: #f0d4a8;
 }
-.postmark {
-  position: absolute; right: .3rem; bottom: .55rem;
-  width: 3.6rem; aspect-ratio: 1; border: 3px double #7d4151;
-  border-radius: 50%; opacity: .76; transform: rotate(-14deg);
+.letter-botanical {
+  align-self: flex-end; width: 78%; height: clamp(12rem,35svh,25rem);
+  object-fit: contain; object-position: right center; margin-block: .25rem;
 }
-.postmark::after {
-  content: "31·12"; position: absolute; inset: 0; display: grid; place-items: center;
-  font: italic 1rem Georgia,serif; color: #66263d;
+.family .letter-masthead h2 {
+  color: inherit; margin: 0; font-size: clamp(3.4rem,6.8vw,8.5rem); line-height: .9;
 }
-.postal-lines {
-  position: absolute; left: calc(100% - .55rem); bottom: 1.5rem;
-  width: clamp(3rem, 6vw, 6rem); color: #855367; opacity: .65;
-  transform: rotate(-7deg); pointer-events: none;
+.letter-masthead h2 em { display: block; color: #efd2a4; }
+.invitation-copy {
+  align-self: center; padding: clamp(3rem,6vw,7rem) clamp(2rem,5vw,7rem);
 }
-.postal-lines i { display: flex; height: .32rem; }
-.postal-lines i::before, .postal-lines i::after {
-  content: ""; width: 50%; height: .3rem;
-}
-.postal-lines i::before { border-top: 1px solid; border-radius: 50% 50% 0 0; }
-.postal-lines i::after { border-bottom: 1px solid; border-radius: 0 0 50% 50%; transform: translateY(-1px); }
 @media (prefers-reduced-motion: no-preference) {
-  .letter-masthead.show .postal-lines { animation: postal-ink .85s .52s ease-out both; }
+  .letter-masthead.show .letter-botanical { animation: botanical-arrival 1.45s ease-out both; }
 }
-@keyframes postal-ink { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
-.invitation-copy { padding-block: 1rem; }
+@keyframes botanical-arrival {
+  from { opacity: .3; transform: translateY(.6rem) rotate(2deg); }
+  to { opacity: 1; transform: none; }
+}
 .invitation-copy .chapter { margin: 0 0 1.15rem; text-transform: uppercase; color: #784e34; }
 .family-letter .family-text, .family-letter .family-detail {
   max-width: 49ch; margin: 0; font: 400 clamp(1.12rem,1.55vw,1.55rem)/1.5 'Spectral',Georgia,serif;
@@ -379,17 +363,16 @@ html.invitation-covered .petal-layer { display: none; }
 .family-detail::before { content: ""; display: block; width: 3.25rem; border-top: 1px solid #a7835c; margin-bottom: .8rem; }
 .grandparent-pair { display: block; text-wrap: balance; }
 @media (max-width: 760px) {
-  .family-letter { display: block; }
-  .letter-masthead { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 0 1rem; }
-  .letter-postage { grid-area: 1 / 2 / 3 / 3; padding-right: .9rem; }
-  .monogram-stamp { width: 4.6rem; }
-  .postmark { width: 2.5rem; right: 0; }
-  .postal-lines { left: auto; right: 1.95rem; bottom: .45rem; width: 2.8rem; }
-  .family .letter-masthead h2 { margin: 0; font-size: clamp(2.6rem, 8vw, 4rem); }
-  .letter-masthead time { align-self: start; }
-  .letter-masthead h2 em { display: inline; }
-  .invitation-copy { padding: 1.6rem 0 0; }
-  .letter-names { font-size: clamp(2.05rem, 8.5vw, 3.7rem); margin-block: .55em; }
+  .family-letter { display: flex; flex-direction: column; }
+  .letter-masthead { min-height: 13.5rem; gap: 1.6rem; padding: 2rem 7%; }
+  .family .letter-masthead h2 { font-size: clamp(3.2rem,10vw,5rem); }
+  .letter-masthead time { font-size: .92rem; padding-bottom: .5rem; }
+  .letter-botanical {
+    position: absolute; right: 5%; bottom: .9rem; width: 36%; height: 76%;
+    object-position: right bottom; pointer-events: none;
+  }
+  .invitation-copy { width: 100%; margin: auto; padding: 2rem 7% 2.4rem; }
+  .letter-names { font-size: clamp(2.1rem,8.3vw,3.8rem); margin-block: .55em; }
 }
 .closing.section {
   justify-content: space-between;
@@ -536,11 +519,6 @@ html.invitation-covered .petal-layer { display: none; }
 .wax-seal i + i { transform: translate(17%,10%); }
 .opening.opened .seal-button { opacity: 0; pointer-events: none; }
 @media (hover: hover) { .seal-button:hover .wax-seal { transform: rotate(-6deg) scale(1.05); } }
-.letter-masthead { position: relative; border-bottom-color: transparent; }
-.letter-masthead::after {
-  content: ""; position: absolute; inset: auto 0 -1px; height: 1px;
-  background: #a7835c; transform-origin: left;
-}
 @media (prefers-reduced-motion: no-preference) {
   .wax-seal { overflow: hidden; }
   .wax-seal::after {
@@ -550,20 +528,9 @@ html.invitation-covered .petal-layer { display: none; }
   }
   .wedding-rings.show::before { --ring-start: -65%; animation: link-ring 1.2s ease-out both; }
   .wedding-rings.show::after { --ring-start: 65%; animation: link-ring 1.2s ease-out both; }
-  .letter-masthead.show::after {
-    animation: draw-rule 1.25s cubic-bezier(.2,.7,.3,1) both;
-  }
 }
 @keyframes seal-glint { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes link-ring { from { transform: translateX(var(--ring-start)); opacity: .25; } to { transform: none; opacity: 1; } }
-@keyframes draw-rule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: no-preference) {
-  .letter-masthead.show .postmark { animation: stamp-letter .65s .18s ease-out both; }
-}
-@keyframes stamp-letter {
-  from { transform: translateY(-.4rem) rotate(-8deg) scale(1.18); opacity: 0; }
-  to { transform: rotate(-14deg); opacity: .76; }
-}
 @media (max-height: 500px) {
   .cover-prayer { top: 7%; }
   .cover-prayer small { margin-top: 0; }
