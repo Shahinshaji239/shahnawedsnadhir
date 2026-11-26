@@ -61,11 +61,16 @@ function openInvitation() {
   updateMusicButton();
   startMusic();
 
-  // Keep the paper at the release position before enabling its transition.
+  const pulled = gesture?.progress || 0;
+  if (pulled && !reducedMotion.matches) {
+    opening.style.setProperty('--release-time', (900 - 500 * pulled) + 'ms');
+    opening.classList.add('from-pull');
+  }
+  // Commit the finger-driven pose before handing motion back to CSS.
   opening.getBoundingClientRect();
   releaseGesture();
   opening.classList.add('opened');
-  main.classList.add('story-started');
+  if (!pulled) main.classList.add('story-started');
   opening.inert = true;
 
   const finish = () => {
@@ -99,41 +104,46 @@ function openInvitation() {
 opening.addEventListener('pointerdown', event => {
   if (opened || gesture || event.button !== 0) return;
   resetCoverScroll();
-  gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  gesture = { id: event.pointerId, x: event.clientX, y: event.clientY,
+    travel: opening.clientHeight * .64, progress: 0, moved: false };
   opening.classList.add('dragging');
   opening.setPointerCapture(event.pointerId);
 });
 
-opening.addEventListener('pointermove', event => {
-  if (event.pointerId !== gesture?.id) return;
+function followPull(event) {
+  const dx = Math.abs(event.clientX - gesture.x);
+  const dy = gesture.y - event.clientY;
+  if (Math.max(dx, Math.abs(dy)) > 10) gesture.moved = true;
+  const progress = Math.min(1, Math.max(dx, dy) / gesture.travel);
+  gesture.progress = progress;
+  if (reducedMotion.matches) return;
 
-  const distance = Math.max(Math.abs(event.clientX - gesture.x), gesture.y - event.clientY);
-  const fullPull = Math.min(420, Math.max(90, window.innerWidth * .28));
-  if (!reducedMotion.matches) setTearProgress(Math.min(1, distance / fullPull));
-  if (distance >= fullPull) {
-    gesture.completed = true;
-    if (event.pointerType === 'mouse') openInvitation();
-  }
+  // Project the hinged tip onto the screen at the finger's current height.
+  const degrees = Math.acos(1 - progress) * 180 / Math.PI;
+  opening.style.setProperty('--flap-angle', -degrees + 'deg');
+  opening.style.setProperty('--seal-rise', -progress * gesture.travel + 'px');
+  setTearProgress(progress);
+}
+
+opening.addEventListener('pointermove', event => {
+  if (event.pointerId === gesture?.id) followPull(event);
 });
 
 opening.addEventListener('pointerup', event => {
   if (event.pointerId !== gesture?.id) return;
-
-  const horizontal = Math.abs(event.clientX - gesture.x);
-  const vertical = Math.abs(event.clientY - gesture.y);
-  const isTap = horizontal <= 10 && vertical <= 10;
-  const isTear = horizontal >= 55 && horizontal > vertical;
-  if (isTap || isTear || gesture.y - event.clientY >= 55 || gesture.completed) {
+  followPull(event);
+  if (!gesture.moved || gesture.progress * gesture.travel >= Math.min(96, gesture.travel * .2)) {
     openInvitation();
   } else {
-    releaseGesture();
-    setTearProgress(0);
+    cancelGesture(event);
   }
 });
 
 function cancelGesture(event) {
   if (event.pointerId !== gesture?.id) return;
   releaseGesture();
+  opening.style.removeProperty('--flap-angle');
+  opening.style.removeProperty('--seal-rise');
   setTearProgress(0);
 }
 

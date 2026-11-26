@@ -420,14 +420,14 @@ html.invitation-covered .petal-layer { display: none; }
 .opening {
   --tip: 64%;
   --seal-size: clamp(3.6rem,9vmin,6.25rem);
-  perspective: 160vmax;
+  perspective: none;
   color: #f5dab3;
 }
 .envelope-pocket, .envelope-flap { position: absolute; inset: 0; }
 .envelope-pocket {
   background: linear-gradient(145deg,#60263c,#451d30 62%,#371927);
   clip-path: polygon(0 24%,50% calc(var(--tip) - 1px),100% 24%,100% 100%,0 100%);
-  transform: translateY(calc(var(--tear-progress, 0) * 4%));
+  transform: translateY(calc(var(--tear-progress, 0) * 85%));
   transition: transform .45s ease-out;
 }
 .envelope-lining {
@@ -443,7 +443,7 @@ html.invitation-covered .petal-layer { display: none; }
 }
 .envelope-flap {
   transform-origin: center top; transform-style: preserve-3d;
-  transform: rotateX(calc(var(--tear-progress, 0) * 40deg));
+  transform: rotateX(var(--flap-angle, 0deg));
   transition: transform .45s ease-out;
   pointer-events: none;
 }
@@ -467,15 +467,24 @@ html.invitation-covered .petal-layer { display: none; }
 .cover-border { position: absolute; inset: clamp(.7rem,2.4vmin,1.7rem); border: 1px solid #cfa67477; }
 .opening.dragging :is(.envelope-pocket,.envelope-flap) { transition: none; }
 .opening.opened .envelope-flap {
-  transform: rotateX(113deg);
+  transform: rotateX(-113deg);
   transition: transform 1s cubic-bezier(.42,.04,.23,1) .12s;
 }
 .opening.opened .envelope-pocket {
   transform: translateY(102%);
   transition: transform .95s cubic-bezier(.52,.01,.25,1) .62s;
 }
+.opening.from-pull :is(.envelope-flap, .envelope-pocket) {
+  transition: transform var(--release-time) cubic-bezier(.18,.68,.26,1);
+}
+.opening.from-pull .wax-seal { animation: none; }
+.opening .seal-button {
+  translate: 0 var(--seal-rise, 0px);
+  transition: opacity .24s ease-out, translate .45s ease-out;
+}
+.opening.dragging .seal-button { transition: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .opening.opened .wax-seal { animation: lift-seal .48s ease-in both; }
+  .opening.opened:not(.from-pull) .wax-seal { animation: lift-seal .48s ease-in both; }
   .opening.opened .seal-button { transition-duration: .48s; }
   .flap-face .cover-title { animation: cover-lettering 1s ease-out; }
 }
