@@ -562,7 +562,7 @@ html.invitation-covered .petal-layer { display: none; }
 }
 .invitation-covered .music-toggle { display: none; }
 
-.venue-card a {
+.day-location a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -584,4 +584,69 @@ html.invitation-covered .petal-layer { display: none; }
   inset: 26%;
   border: 1px solid currentColor;
   border-radius: 50%;
+}
+
+.celebration.section {
+  --ticket-paper: #fff6e6;
+  padding: clamp(2.25rem, 6vw, 6rem) clamp(1rem, 5vw, 5rem);
+  background: #e9d9c5;
+}
+.day-sheet {
+  width: min(100%, 62rem);
+  color: var(--wine);
+  background: var(--ticket-paper);
+  border: 1px solid #aa876050;
+  box-shadow: 0 16px 40px -25px #542a24a8;
+}
+.day-heading {
+  margin-inline: 6%;
+  border-bottom: 1px solid #986d4670;
+}
+.celebration .day-heading h2 {
+  font-size: clamp(2.6rem, 6vw, 5.8rem);
+  margin: .3em 0;
+}
+.day-details {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: center;
+  padding: clamp(1.4rem, 4vw, 3.3rem) 6%;
+}
+.day-calendar { padding: .5rem 5%; }
+.day-calendar time { display: grid; justify-items: center; }
+.day-weekday, .day-location .chapter {
+  font: 600 .8rem/1.3 'DM Sans', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .17em;
+  color: #785033;
+}
+.day-number { font: 500 clamp(6rem, 13vw, 11rem)/.88 'Cormorant Garamond', Georgia, serif; }
+.day-month { font: 500 clamp(1.65rem, 3vw, 2.7rem)/1.15 'Cormorant Garamond', Georgia, serif; }
+.day-calendar p { margin: .55rem 0 0; font: italic 1rem Georgia, serif; color: #684b43; }
+.day-location { border-left: 1px dashed #a6825b; padding: .45rem 0 .45rem 12%; text-align: left; }
+.day-location .chapter { margin: 0; }
+.day-location h3 { margin: .35em 0; font: 500 clamp(2rem, 3.8vw, 3.5rem)/.99 'Cormorant Garamond', Georgia, serif; }
+.day-location address { font-style: normal; color: #573c36; line-height: 1.5; }
+.day-location a {
+  margin-top: 1rem; min-height: 44px; padding: .7rem 1rem;
+  background: var(--wine); color: #fff4e4; text-decoration: none;
+  font-size: .82rem; letter-spacing: .07em;
+}
+.day-location a:hover, .day-location a:focus-visible { background: #501b2c; }
+.day-sheet .countdown {
+  width: 100%; margin: 0; gap: 0; padding: 1rem 4%;
+  background: #561c30; color: #ffe6c4;
+}
+.day-sheet .countdown > div + div { border-left: 1px solid #e5bb8d55; }
+.day-sheet .countdown strong { color: #fff0da; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.day-sheet .countdown small { font-size: clamp(.65rem, 1vw, .78rem); }
+@media (max-width: 600px) {
+  .day-details { grid-template-columns: 1fr; gap: 1.15rem; padding: 1.1rem 7%; }
+  .day-calendar { padding: 0; }
+  .day-calendar time { grid-template-columns: auto auto; grid-template-rows: auto auto; width: fit-content; margin: auto; align-items: end; gap: 0 .75rem; }
+  .day-number { grid-row: 1 / 3; grid-column: 1; font-size: 5.5rem; }
+  .day-month, .day-weekday { grid-column: 2; justify-self: start; }
+  .day-month { align-self: start; }
+  .day-location { border-left: 0; border-top: 1px dashed #a6825b; padding: 1rem 0 0; text-align: center; }
+  .day-location h3 { font-size: 2.2rem; }
 }
