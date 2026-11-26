@@ -530,13 +530,34 @@ html.invitation-covered .petal-layer { display: none; }
 .day-sheet .countdown strong { color: #fff0da; font-size: clamp(2rem,4vw,3.5rem); line-height: 1; font-variant-numeric: tabular-nums; }
 .day-sheet .countdown small { font-size: clamp(.65rem,1vw,.78rem); }
 @media (max-width: 650px) {
-  .day-details { grid-template-columns: 1fr; gap: 1.8rem; }
+  .celebration.section {
+    --folio-inset: clamp(1.25rem, 6vw, 2.5rem);
+    padding: 0;
+    align-content: stretch;
+    align-items: stretch;
+  }
+  .day-sheet {
+    display: flex;
+    flex-direction: column;
+    padding-top: max(4.5rem, 9svh);
+    background: radial-gradient(ellipse at 0 0, #76334a, transparent 60%), #421727;
+  }
+  .day-heading { margin-inline: var(--folio-inset); }
+  .celebration .day-heading h2 {
+    font-size: clamp(2.8rem, 10vw, 4rem);
+    margin-bottom: .24em;
+  }
+  .day-details { flex: 1; display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 0; }
   .day-calendar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: .5rem;
+    padding: clamp(1.3rem, 4svh, 2.75rem) var(--folio-inset);
   }
+  .day-number { font-size: clamp(5rem, 23vw, 8rem); font-variant-numeric: lining-nums; }
+  .day-calendar .day-month { font-size: clamp(1.3rem, 5.6vw, 2rem); }
+  .day-calendar .day-weekday { align-self: end; font-size: .72rem; }
   .day-calendar time { width: fit-content; column-gap: clamp(.4rem, 2vw, 1rem); }
   .day-calendar .hijri-date {
     margin: 0;
@@ -547,6 +568,25 @@ html.invitation-covered .petal-layer { display: none; }
     white-space: nowrap;
   }
   .hijri-date span { display: block; }
+  .day-location {
+    flex: 1;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    padding: clamp(1.9rem, 5svh, 3.5rem) var(--folio-inset);
+    background: #f9efdf;
+    color: #541d31;
+    text-align: center;
+    border-block: 3px double #bf9b6b;
+  }
+  .day-location .chapter { color: #815934; font-size: .72rem; }
+  .day-location h3 { font-size: clamp(2.35rem, 9.8vw, 3.9rem); line-height: 1.02; margin: .3em 0; }
+  .day-location address { color: #624844; font-size: .94rem; }
+  .day-location a { background: #571e32; color: #fff3df; padding-inline: 1.45rem; border-radius: 2rem; }
+  .day-location a:is(:hover, :focus-visible) { background: #381321; }
+  .day-sheet .countdown { border: 0; padding: 1.1rem var(--folio-inset); }
+  .day-sheet .countdown strong { font-size: 2rem; font-variant-numeric: lining-nums tabular-nums; }
+  .day-sheet .countdown small { color: #ead0ac; }
   .invitation-copy { text-align: left; padding-top: 1.65rem; }
   .invitation-copy .family-text, .invitation-copy .family-detail { margin-inline: 0; }
   .invitation-copy .letter-names {
