@@ -451,6 +451,34 @@ html.invitation-covered .petal-layer { display: none; }
 .wax-seal i + i { transform: translate(17%,10%); }
 .opening.opened .seal-button { opacity: 0; pointer-events: none; }
 @media (hover: hover) { .seal-button:hover .wax-seal { transform: rotate(-6deg) scale(1.05); } }
+.letter-masthead { position: relative; border-bottom-color: transparent; }
+.letter-masthead::after {
+  content: ""; position: absolute; inset: auto 0 -1px; height: 1px;
+  background: #a7835c; transform-origin: left;
+}
+.closing-ornament { position: relative; }
+.closing-ornament::before, .closing-ornament::after {
+  content: ""; position: absolute; top: 54%; width: clamp(2rem, 9vw, 6rem); height: 1px;
+  background: linear-gradient(90deg, transparent, #cba270);
+}
+.closing-ornament::before { right: calc(100% + .22em); transform-origin: right; }
+.closing-ornament::after { left: calc(100% + .22em); transform-origin: left; background: linear-gradient(90deg, #cba270, transparent); }
+@media (prefers-reduced-motion: no-preference) {
+  .wax-seal { overflow: hidden; }
+  .wax-seal::after {
+    content: ""; position: absolute; inset: -20% 0; pointer-events: none;
+    background: linear-gradient(115deg, transparent 32%, #fff1c866 48%, transparent 65%);
+    animation: seal-glint 1.65s .35s ease-in-out both;
+  }
+  .wedding-rings.show::before { --ring-start: -65%; animation: link-ring 1.2s ease-out both; }
+  .wedding-rings.show::after { --ring-start: 65%; animation: link-ring 1.2s ease-out both; }
+  .letter-masthead.show::after, .closing-ornament.show::before, .closing-ornament.show::after {
+    animation: draw-rule 1.25s cubic-bezier(.2,.7,.3,1) both;
+  }
+}
+@keyframes seal-glint { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
+@keyframes link-ring { from { transform: translateX(var(--ring-start)); opacity: .25; } to { transform: none; opacity: 1; } }
+@keyframes draw-rule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @media (max-height: 500px) {
   .cover-prayer { top: 7%; }
   .cover-prayer small { margin-top: 0; }

@@ -171,7 +171,8 @@ if ('IntersectionObserver' in window) {
   }, { threshold: .12 });
 
   main.classList.add('has-scroll-reveals');
-  main.querySelectorAll('.section:not(.hero) .reveal').forEach(element => observer.observe(element));
+  main.querySelectorAll('.section:not(.hero) .reveal, .wedding-rings, .letter-masthead')
+    .forEach(element => observer.observe(element));
 }
 
 const hero = main.querySelector('.hero');
