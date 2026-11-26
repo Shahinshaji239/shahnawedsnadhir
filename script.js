@@ -1,7 +1,7 @@
 const opening = document.getElementById('opening');
 const main = document.getElementById('main');
 const openButton = document.getElementById('openButton');
-const leftPaper = document.getElementById('leftPaper');
+const pocket = opening.querySelector('.envelope-pocket');
 const petalLayer = document.getElementById('petal-layer');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const resetCoverScroll = () => window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -9,19 +9,6 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.addEventListener('pageshow', () => { if (!opened) resetCoverScroll(); });
 let gesture = null;
 let opened = false;
-
-// Both leaves carry the same full-width engraving so it meets at the fold.
-const coverArt = document.getElementById('cover-art');
-for (const flower of coverArt.content.querySelectorAll('.cover-flower')) {
-  for (let petal = 0; petal < 18; petal++) {
-    const loop = document.createElement('i');
-    loop.style.transform = 'rotate(' + petal * 10 + 'deg)';
-    flower.append(loop);
-  }
-}
-for (const leaf of opening.querySelectorAll('.paper')) {
-  leaf.append(coverArt.content.cloneNode(true));
-}
 
 // Stagger a fixed number of petals so both edges are in motion on arrival.
 for (let i = 0; i < 12; i++) {
@@ -95,18 +82,18 @@ function openInvitation() {
   }
 
   const fallback = window.setTimeout(() => {
-    leftPaper.removeEventListener('transitionend', finishOnTear);
+    pocket.removeEventListener('transitionend', finishOnExit);
     finish();
-  }, 1450);
+  }, 1850);
 
-  function finishOnTear(event) {
-    if (event.target !== leftPaper || event.propertyName !== 'transform') return;
+  function finishOnExit(event) {
+    if (event.target !== pocket || event.propertyName !== 'transform') return;
     window.clearTimeout(fallback);
-    leftPaper.removeEventListener('transitionend', finishOnTear);
+    pocket.removeEventListener('transitionend', finishOnExit);
     finish();
   }
 
-  leftPaper.addEventListener('transitionend', finishOnTear);
+  pocket.addEventListener('transitionend', finishOnExit);
 }
 
 opening.addEventListener('pointerdown', event => {
@@ -120,7 +107,7 @@ opening.addEventListener('pointerdown', event => {
 opening.addEventListener('pointermove', event => {
   if (event.pointerId !== gesture?.id) return;
 
-  const distance = Math.abs(event.clientX - gesture.x);
+  const distance = Math.max(Math.abs(event.clientX - gesture.x), gesture.y - event.clientY);
   const fullPull = Math.min(420, Math.max(90, window.innerWidth * .28));
   if (!reducedMotion.matches) setTearProgress(Math.min(1, distance / fullPull));
   if (distance >= fullPull) {
@@ -136,7 +123,7 @@ opening.addEventListener('pointerup', event => {
   const vertical = Math.abs(event.clientY - gesture.y);
   const isTap = horizontal <= 10 && vertical <= 10;
   const isTear = horizontal >= 55 && horizontal > vertical;
-  if (isTap || isTear || gesture.completed) {
+  if (isTap || isTear || gesture.y - event.clientY >= 55 || gesture.completed) {
     openInvitation();
   } else {
     releaseGesture();

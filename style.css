@@ -416,85 +416,86 @@ html.invitation-covered .petal-layer { display: none; }
 .blessing-arch .closing-names { margin: 1.2rem 0 .65rem; font-size: clamp(1.9rem,6vw,4.4rem); }
 .blessing-arch .closing-foot { margin: 0; line-height: 1.6; text-wrap: balance; }
 .closing .maker-credit { width: 100%; border-top: 1px solid #c69b6538; }
-/* The two clipped prints share one continuous cover. */
-.opening .paper {
-  width: 50%;
-  clip-path: none;
-  overflow: hidden;
-  background: #491827;
-  filter: none;
-  backface-visibility: hidden;
+/* The flap and pocket share a V seam. Their motion exposes the live hero below. */
+.opening {
+  --tip: 64%;
+  --seal-size: clamp(3.6rem,9vmin,6.25rem);
+  perspective: 160vmax;
+  color: #f5dab3;
 }
-.opening .paper::before { display: none; }
-.cover-sheet {
-  --foil: #efd0a2;
-  position: absolute;
-  inset-block: 0;
-  width: 100vw;
-  color: var(--foil);
+.envelope-pocket, .envelope-flap { position: absolute; inset: 0; }
+.envelope-pocket {
+  background: linear-gradient(145deg,#60263c,#451d30 62%,#371927);
+  clip-path: polygon(0 24%,50% calc(var(--tip) - 1px),100% 24%,100% 100%,0 100%);
+  transform: translateY(calc(var(--tear-progress, 0) * 4%));
+  transition: transform .45s ease-out;
+}
+.envelope-lining {
+  position: absolute; inset: 0;
   background:
-    repeating-linear-gradient(105deg, transparent 0 3px, #ffefd104 3px 4px),
-    radial-gradient(ellipse at 42% 35%, var(--wine), #502034 64%, var(--dark));
+    linear-gradient(to top right,transparent 49.8%,#d4aa6b55 50%,transparent 50.2%) left bottom / 50% 36% no-repeat,
+    linear-gradient(to top left,transparent 49.8%,#d4aa6b55 50%,transparent 50.2%) right bottom / 50% 36% no-repeat;
+}
+.envelope-pocket::before {
+  content: ""; position: absolute; inset: 0;
+  background: url('assets/jasmine-engraving.webp') left -2vmin bottom -7vmin / auto 36% no-repeat;
+  opacity: .48;
+}
+.envelope-flap {
+  transform-origin: center top; transform-style: preserve-3d;
+  transform: rotateX(calc(var(--tear-progress, 0) * 40deg));
+  transition: transform .45s ease-out;
+  pointer-events: none;
+}
+.flap-face, .flap-lining {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  clip-path: polygon(0 0,100% 0,100% 24%,50% var(--tip),0 24%);
+}
+.flap-face {
   text-align: center;
+  background: radial-gradient(ellipse at 50% 16%,#853d53,var(--wine) 51%,#43192c 85%);
 }
-.paper-left .cover-sheet { left: 0; }
-.paper-right .cover-sheet { right: 0; }
-.paper-right { box-shadow: -1px 0 2px #270d18aa; }
-.cover-border {
-  position: absolute;
-  inset: clamp(12px, 2.6vmin, 30px);
-  border: 1px solid #c1966280;
-  outline: 1px solid #c196623e;
-  outline-offset: 5px;
+.flap-face::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to top left,transparent 49.55%,#e0bb8499 49.9%,transparent 50.35%) right 0 top 24svh / 50% 40% no-repeat,
+    linear-gradient(to top right,transparent 49.55%,#e0bb8499 49.9%,transparent 50.35%) left 0 top 24svh / 50% 40% no-repeat;
 }
-.cover-flower {
-  position: absolute;
-  width: clamp(12rem, 40vmin, 32rem);
-  aspect-ratio: 1;
-  opacity: .55;
+.flap-lining {
+  background: repeating-linear-gradient(45deg,#ddbd92 0 1px,#f2dab8 1px 6px);
+  transform: rotateY(180deg);
 }
-.flower-top { top: -10%; left: -7%; }
-.flower-bottom { right: -7%; bottom: -10%; }
-.cover-flower i {
-  position: absolute;
-  inset: 0 32%;
-  border: 1px solid #c89a64;
-  border-radius: 50%;
+.cover-border { position: absolute; inset: clamp(.7rem,2.4vmin,1.7rem); border: 1px solid #cfa67477; }
+.opening.dragging :is(.envelope-pocket,.envelope-flap) { transition: none; }
+.opening.opened .envelope-flap {
+  transform: rotateX(113deg);
+  transition: transform 1s cubic-bezier(.42,.04,.23,1) .12s;
 }
-.cover-thread {
-  position: absolute; inset-inline: 0;
-  top: calc(59% + .35rem + clamp(1.8rem,4.5vmin,3.125rem));
-  height: 4px; transform: rotate(-3deg);
-  background: repeating-linear-gradient(125deg,#977445 0 2px,#f4dba7 2px 4px,#c29a62 4px 6px);
-  box-shadow: 0 2px 3px #27101a99;
+.opening.opened .envelope-pocket {
+  transform: translateY(102%);
+  transition: transform .95s cubic-bezier(.52,.01,.25,1) .62s;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .cover-flower { animation: unfold-engraving 1.9s cubic-bezier(.16,.75,.25,1) both; }
   .opening.opened .wax-seal { animation: lift-seal .48s ease-in both; }
   .opening.opened .seal-button { transition-duration: .48s; }
+  .flap-face .cover-title { animation: cover-lettering 1s ease-out; }
 }
-@keyframes unfold-engraving {
-  from { opacity: .08; transform: rotate(-17deg) scale(.82); }
-  to { opacity: .55; transform: none; }
-}
-@keyframes lift-seal {
-  to { transform: translateY(-1.2rem) rotate(-18deg) scale(1.18); }
-}
+@keyframes cover-lettering { from { opacity: 0; translate: 0 .4rem; } }
+@keyframes lift-seal { to { transform: translateY(-1.5rem) rotate(-22deg) scale(1.15); } }
 .cover-prayer, .cover-title, .cover-date {
   position: absolute;
   left: 0;
   width: 100%;
 }
-.cover-prayer { top: 12%; }
+.cover-prayer { top: 9%; }
 .cover-prayer span { font: clamp(1.25rem, 2.6vw, 2rem) Georgia, serif; }
-.cover-sheet small, .cover-date, .seal-prompt {
+.flap-face small, .cover-date, .seal-prompt {
   display: block;
   font: 500 clamp(.72rem, 1vw, .87rem)/1.5 'DM Sans', sans-serif;
   letter-spacing: .15em;
   text-transform: uppercase;
 }
 .cover-prayer small { margin-top: .55rem; }
-.cover-title { top: 43%; transform: translateY(-50%); }
+.cover-title { top: 34%; transform: translateY(-50%); }
 .cover-title div {
   font: 500 clamp(2.4rem, 8.6vw, 10rem)/1.24 'Bodoni Moda', Georgia, serif;
   font-variation-settings: "opsz" 18;
@@ -504,10 +505,10 @@ html.invitation-covered .petal-layer { display: none; }
 }
 .cover-title i { font: italic .55em 'Cormorant Garamond', Georgia, serif; }
 .cover-title small { margin-bottom: .6rem; }
-.cover-date { bottom: 10%; }
+.cover-date { bottom: 10%; text-align: center; }
 .seal-button {
   position: absolute;
-  top: 59%;
+  top: calc(var(--tip) - var(--seal-size) / 2 - .35rem);
   left: 50%;
   transform: translateX(-50%);
   display: grid;
@@ -554,10 +555,10 @@ html.invitation-covered .petal-layer { display: none; }
 @media (max-height: 500px) {
   .cover-prayer { top: 7%; }
   .cover-prayer small { margin-top: 0; }
-  .cover-title { top: 40%; }
+  .cover-title { top: 33%; }
   .cover-title div { font-size: clamp(2rem, 12svh, 4rem); }
   .seal-button { top: 55%; gap: .25rem; }
-  .cover-thread { top: calc(55% + 1.75rem); }
+
   .wax-seal { width: 2.8rem; }
   .cover-date { bottom: 6%; }
 }
