@@ -325,17 +325,18 @@ html.invitation-covered .petal-layer { display: none; }
 .letter-postage {
   position: relative; width: fit-content; padding: .65rem 2rem .5rem .3rem;
 }
-.portrait-stamp {
+.monogram-stamp {
   display: block; width: clamp(5rem,9vw,10rem); aspect-ratio: 4/5;
   background: #fff7e7; padding: .55rem;
   mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
     radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.8px) -4px -4px / 8px 8px;
   transform: rotate(-6deg);
 }
-.portrait-stamp::before {
-  content: ""; display: block; height: 100%; border: 1px solid #a58060;
-  background: url('assets/couple-background.webp') center 42% / cover;
-  filter: sepia(.32);
+.monogram-stamp::before {
+  content: "SN"; display: grid; place-items: center; height: 100%;
+  border: 3px double #cfac77; background: #61233a; color: #f1d59f;
+  font: italic clamp(1.6rem,4vw,4.5rem)/1 'Cormorant Garamond',Georgia,serif;
+  letter-spacing: -.12em; padding-right: .12em;
 }
 .postmark {
   position: absolute; right: .3rem; bottom: .55rem;
@@ -343,7 +344,7 @@ html.invitation-covered .petal-layer { display: none; }
   border-radius: 50%; opacity: .76; transform: rotate(-14deg);
 }
 .postmark::after {
-  content: "S · N"; position: absolute; inset: 0; display: grid; place-items: center;
+  content: "31·12"; position: absolute; inset: 0; display: grid; place-items: center;
   font: italic 1rem Georgia,serif; color: #66263d;
 }
 .invitation-copy { padding-block: 1rem; }
@@ -366,7 +367,7 @@ html.invitation-covered .petal-layer { display: none; }
   .family-letter { display: block; }
   .letter-masthead { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 0 1rem; }
   .letter-postage { grid-area: 1 / 2 / 3 / 3; padding-right: .9rem; }
-  .portrait-stamp { width: 4.6rem; }
+  .monogram-stamp { width: 4.6rem; }
   .postmark { width: 2.5rem; right: 0; }
   .family .letter-masthead h2 { margin: 0; font-size: clamp(2.6rem, 8vw, 4rem); }
   .letter-masthead time { align-self: start; }
@@ -375,19 +376,47 @@ html.invitation-covered .petal-layer { display: none; }
   .letter-names { font-size: clamp(2.05rem, 8.5vw, 3.7rem); margin-block: .55em; }
 }
 .closing.section {
-  padding-block: clamp(1.5rem, 4svh, 3rem);
-  gap: clamp(.5rem, 1.4svh, 1rem);
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(4.5rem, 9svh, 7rem) clamp(1rem, 4vw, 4rem) max(.5rem, env(safe-area-inset-bottom));
+  background: radial-gradient(ellipse at 50% 35%, #663349, #371d31 64%, #291a29);
 }
-.closing.section > * { margin-block: 0; }
-.closing.section > :first-child,
-.closing.section > .maker-credit { margin-block-start: auto; }
-
-.closing.section h2 {
-  font-size: clamp(2.65rem, 5.8vw, 6rem);
-  text-wrap: balance;
+.blessing-arch {
+  width: min(100%, 47rem); position: relative; margin-block: auto;
+  padding: clamp(3rem,7svh,5rem) clamp(.9rem,4vw,3rem) clamp(1.75rem,5svh,4rem);
+  border: 1px solid #c69b656e; border-radius: 50% 50% 0 0 / 9rem 9rem 0 0;
+  background: radial-gradient(ellipse at 50% 12%, #ddb2751c, transparent 50%);
 }
-.closing-ornament { line-height: 1; font-size: clamp(2.5rem, 5vw, 4.5rem); }
-.closing .closing-names { margin-top: .2em; }
+.blessing-arch::before {
+  content: ""; position: absolute; inset: .35rem; border: 1px solid #c69b6538;
+  border-radius: inherit; pointer-events: none;
+}
+.closing-lantern {
+  position: relative; width: 1.9rem; height: 2.55rem; margin: 0 auto;
+  border: 2px solid #dcb37e; border-radius: 46% 46% 22% 22%;
+  background: linear-gradient(90deg, transparent 20%, #ccab7680 22%, transparent 26% 74%, #ccab7680 78%, transparent 80%);
+}
+.closing-lantern::before, .closing-lantern::after {
+  content: ""; position: absolute; left: 50%; transform: translateX(-50%); background: #dcb37e;
+}
+.closing-lantern::before { width: 1px; bottom: 100%; height: clamp(3rem,7svh,5rem); }
+.closing-lantern::after { width: 70%; height: 3px; bottom: -4px; border-radius: 50%; }
+.lantern-light {
+  position: absolute; inset: 38% 32% 12%; border-radius: 80% 20% 65% 45%;
+  background: #ffe3a6; box-shadow: 0 0 12px 4px #ebbb7380, 0 0 34px 12px #eba66442;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .closing-lantern.show .lantern-light { animation: kindle 2.4s ease-out both; }
+}
+@keyframes kindle { from { opacity: .15; transform: scale(.55); } to { opacity: 1; transform: scale(1); } }
+.blessing-arch .chapter, .blessing-arch .closing-foot { text-transform: uppercase; }
+.blessing-arch .chapter { margin: 1.5rem 0 .7rem; }
+.closing.section h2 { font-size: clamp(3.15rem,7.5vw,7rem); line-height: .97; margin: 0; }
+.closing.section h2 i { display: block; color: #f3d399; }
+.blessing-message { max-width: 32ch; margin: 1.2rem auto; font: 400 clamp(1.15rem,2vw,1.65rem)/1.4 'Cormorant Garamond',Georgia,serif; text-wrap: balance; }
+.blessing-arch .closing-names { margin: 1.2rem 0 .65rem; font-size: clamp(1.9rem,6vw,4.4rem); }
+.blessing-arch .closing-foot { margin: 0; line-height: 1.6; text-wrap: balance; }
+.closing .maker-credit { width: 100%; border-top: 1px solid #c69b6538; }
 /* The two clipped prints share one continuous cover. */
 .opening .paper {
   width: 50%;
@@ -496,13 +525,6 @@ html.invitation-covered .petal-layer { display: none; }
   content: ""; position: absolute; inset: auto 0 -1px; height: 1px;
   background: #a7835c; transform-origin: left;
 }
-.closing-ornament { position: relative; }
-.closing-ornament::before, .closing-ornament::after {
-  content: ""; position: absolute; top: 54%; width: clamp(2rem, 9vw, 6rem); height: 1px;
-  background: linear-gradient(90deg, transparent, #cba270);
-}
-.closing-ornament::before { right: calc(100% + .22em); transform-origin: right; }
-.closing-ornament::after { left: calc(100% + .22em); transform-origin: left; background: linear-gradient(90deg, #cba270, transparent); }
 @media (prefers-reduced-motion: no-preference) {
   .wax-seal { overflow: hidden; }
   .wax-seal::after {
@@ -512,7 +534,7 @@ html.invitation-covered .petal-layer { display: none; }
   }
   .wedding-rings.show::before { --ring-start: -65%; animation: link-ring 1.2s ease-out both; }
   .wedding-rings.show::after { --ring-start: 65%; animation: link-ring 1.2s ease-out both; }
-  .letter-masthead.show::after, .closing-ornament.show::before, .closing-ornament.show::after {
+  .letter-masthead.show::after {
     animation: draw-rule 1.25s cubic-bezier(.2,.7,.3,1) both;
   }
 }
