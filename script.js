@@ -170,66 +170,15 @@ if ('IntersectionObserver' in window) {
 }
 
 const hero = main.querySelector('.hero');
-const familySection = main.querySelector('.family');
-const familyPanel = familySection.querySelector('.family-letter');
-const cylinder = familyPanel.querySelector('.letter-cylinder');
-const letterLines = [...cylinder.querySelectorAll('.letter-line')];
-const phoneLetter = window.matchMedia('(max-width: 600px)');
-let stepAngle = Math.PI / 6;
-let cylinderRadius = 0;
-
-function sizeCylinder() {
-  familySection.classList.remove('letter-complete');
-  familySection.classList.toggle('rolling-letter', !reducedMotion.matches);
-  if (!reducedMotion.matches) {
-    const tallestLine = Math.max(...letterLines.map(line => line.offsetHeight));
-    stepAngle = phoneLetter.matches ? Math.PI / 3 : Math.PI / 6;
-    cylinderRadius = (tallestLine + (phoneLetter.matches ? 16 : 8)) / Math.sin(stepAngle);
-    cylinder.style.height = Math.ceil(cylinderRadius * 2.3) + 'px';
-    familySection.style.setProperty('--reading-distance', ((letterLines.length - 1) * 15 + 55) + 'svh');
-  } else {
-    cylinder.style.height = '';
-  }
-  updateScrollEffects();
-}
-
-function turnLetter() {
-  if (reducedMotion.matches) return;
-  const bounds = familySection.getBoundingClientRect();
-  if (bounds.bottom < 0 || bounds.top > innerHeight) return;
-  const travel = Math.max(1, bounds.height - familyPanel.offsetHeight);
-  const progress = Math.min(1, Math.max(0, -bounds.top / travel));
-  // Reserve the end of the sticky section for reading the complete letter.
-  const phases = (letterLines.length - 1) * 15 + 55;
-  const elapsed = progress * phases;
-  const lastLine = letterLines.length - 1;
-  const complete = elapsed >= lastLine * 15 + 8;
-  familySection.classList.toggle('letter-complete', complete);
-  if (complete) return;
-  const position = Math.min(lastLine, elapsed / 15);
-  letterLines.forEach((line, index) => {
-    const angle = (index - position) * stepAngle;
-    // Only the front half of the cylinder faces the reader.
-    const front = Math.abs(angle) < Math.PI / 2;
-    line.style.opacity = front ? String(Math.cos(angle) ** (phoneLetter.matches ? 3 : 1.4)) : '0';
-    if (!front) return;
-    const y = Math.sin(angle) * cylinderRadius;
-    const z = (Math.cos(angle) - 1) * cylinderRadius;
-    line.style.transform = 'translateY(-50%) perspective(850px) translate3d(0,' +
-      y + 'px,' + z + 'px) rotateX(' + (-angle) + 'rad)';
-  });
-}
 function updateScrollEffects() {
-  turnLetter();
   const progress = reducedMotion.matches ? 0 : Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight));
   hero.style.setProperty('--portrait-scale', String(1 + progress * .32));
   hero.style.setProperty('--portrait-shift', (progress * -44) + 'px');
 }
 window.addEventListener('scroll', updateScrollEffects, { passive: true });
-window.addEventListener('resize', sizeCylinder);
-reducedMotion.addEventListener?.('change', sizeCylinder);
-document.fonts?.ready.then(sizeCylinder);
-sizeCylinder();
+window.addEventListener('resize', updateScrollEffects);
+reducedMotion.addEventListener?.('change', updateScrollEffects);
+updateScrollEffects();
 
 // Ease larger mouse-wheel steps. Touch and fine trackpad gestures keep their native momentum.
 let wheelTarget = null;
