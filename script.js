@@ -37,8 +37,6 @@ for (let i = 0; i < 12; i++) {
 
 function setTearProgress(progress) {
   opening.style.setProperty('--tear-progress', progress);
-  opening.style.setProperty('--left-pull', -progress * 72 + '%');
-  opening.style.setProperty('--right-pull', progress * 72 + '%');
 }
 
 function releaseGesture() {
@@ -80,6 +78,7 @@ function openInvitation() {
   opening.getBoundingClientRect();
   releaseGesture();
   opening.classList.add('opened');
+  main.classList.add('story-started');
   opening.inert = true;
 
   const finish = () => {
@@ -87,7 +86,6 @@ function openInvitation() {
     document.documentElement.classList.remove('invitation-covered');
     resetCoverScroll();
     main.inert = false;
-    main.classList.add('story-started');
     main.focus({ preventScroll: true });
   };
 
@@ -99,7 +97,7 @@ function openInvitation() {
   const fallback = window.setTimeout(() => {
     leftPaper.removeEventListener('transitionend', finishOnTear);
     finish();
-  }, 750);
+  }, 1450);
 
   function finishOnTear(event) {
     if (event.target !== leftPaper || event.propertyName !== 'transform') return;
