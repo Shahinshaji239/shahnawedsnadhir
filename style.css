@@ -347,6 +347,21 @@ html.invitation-covered .petal-layer { display: none; }
   content: "31·12"; position: absolute; inset: 0; display: grid; place-items: center;
   font: italic 1rem Georgia,serif; color: #66263d;
 }
+.postal-lines {
+  position: absolute; left: calc(100% - .55rem); bottom: 1.5rem;
+  width: clamp(3rem, 6vw, 6rem); color: #855367; opacity: .65;
+  transform: rotate(-7deg); pointer-events: none;
+}
+.postal-lines i { display: flex; height: .32rem; }
+.postal-lines i::before, .postal-lines i::after {
+  content: ""; width: 50%; height: .3rem;
+}
+.postal-lines i::before { border-top: 1px solid; border-radius: 50% 50% 0 0; }
+.postal-lines i::after { border-bottom: 1px solid; border-radius: 0 0 50% 50%; transform: translateY(-1px); }
+@media (prefers-reduced-motion: no-preference) {
+  .letter-masthead.show .postal-lines { animation: postal-ink .85s .52s ease-out both; }
+}
+@keyframes postal-ink { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
 .invitation-copy { padding-block: 1rem; }
 .invitation-copy .chapter { margin: 0 0 1.15rem; text-transform: uppercase; color: #784e34; }
 .family-letter .family-text, .family-letter .family-detail {
@@ -369,6 +384,7 @@ html.invitation-covered .petal-layer { display: none; }
   .letter-postage { grid-area: 1 / 2 / 3 / 3; padding-right: .9rem; }
   .monogram-stamp { width: 4.6rem; }
   .postmark { width: 2.5rem; right: 0; }
+  .postal-lines { left: auto; right: 1.95rem; bottom: .45rem; width: 2.8rem; }
   .family .letter-masthead h2 { margin: 0; font-size: clamp(2.6rem, 8vw, 4rem); }
   .letter-masthead time { align-self: start; }
   .letter-masthead h2 em { display: inline; }
