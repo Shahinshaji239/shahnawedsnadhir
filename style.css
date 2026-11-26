@@ -308,31 +308,71 @@ html.invitation-covered .petal-layer { display: none; }
   justify-content: stretch;
   grid-template-columns: minmax(0, 1fr);
 }
-.family.section { background: linear-gradient(125deg,#f3e4d0,#fff8ec 52%,#f1dfc8); }
-.letter-masthead {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 1rem; padding-bottom: .8rem; border-bottom: 1px solid #a7835c; color: var(--wine);
+.family.section {
+  background: linear-gradient(105deg,#eee0c9,#fbf3e5 42%,#fff8ed);
+  text-align: left;
 }
-.family .letter-masthead h2 { margin: 0; font-size: clamp(1.8rem,3.3vw,3.7rem); }
-.letter-masthead time { font: italic clamp(.88rem,1.4vw,1.25rem) Georgia,serif; }
-.invitation-copy { padding-block: clamp(2rem,5svh,4.5rem) 0; }
-.invitation-copy .chapter { margin: 0 auto 1rem; text-transform: uppercase; color: #784e34; }
+.family-letter {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.3fr);
+  gap: clamp(2.2rem, 7vw, 9rem);
+  align-items: center;
+}
+.letter-masthead { color: var(--wine); padding-block: 1.5rem; align-self: center; }
+.family .letter-masthead h2 { margin: .38em 0 .25em; font-size: clamp(3.4rem, 6.8vw, 8rem); }
+.letter-masthead h2 em { display: block; }
+.letter-masthead time { font: italic clamp(1rem,1.4vw,1.3rem) Georgia,serif; }
+.letter-postage {
+  position: relative; width: fit-content; padding: .65rem 2rem .5rem .3rem;
+}
+.portrait-stamp {
+  display: block; width: clamp(5rem,9vw,10rem); aspect-ratio: 4/5;
+  background: #fff7e7; padding: .55rem;
+  mask: linear-gradient(#000 0 0) center / calc(100% - 8px) calc(100% - 8px) no-repeat,
+    radial-gradient(circle at 4px 4px, transparent 2.4px, #000 2.8px) -4px -4px / 8px 8px;
+  transform: rotate(-6deg);
+}
+.portrait-stamp::before {
+  content: ""; display: block; height: 100%; border: 1px solid #a58060;
+  background: url('assets/couple-background.webp') center 42% / cover;
+  filter: sepia(.32);
+}
+.postmark {
+  position: absolute; right: .3rem; bottom: .55rem;
+  width: 3.6rem; aspect-ratio: 1; border: 3px double #7d4151;
+  border-radius: 50%; opacity: .76; transform: rotate(-14deg);
+}
+.postmark::after {
+  content: "S · N"; position: absolute; inset: 0; display: grid; place-items: center;
+  font: italic 1rem Georgia,serif; color: #66263d;
+}
+.invitation-copy { padding-block: 1rem; }
+.invitation-copy .chapter { margin: 0 0 1.15rem; text-transform: uppercase; color: #784e34; }
 .family-letter .family-text, .family-letter .family-detail {
-  max-width: 53ch; margin: 0 auto; font: 400 clamp(1.12rem,1.55vw,1.55rem)/1.5 'Spectral',Georgia,serif;
+  max-width: 49ch; margin: 0; font: 400 clamp(1.12rem,1.55vw,1.55rem)/1.5 'Spectral',Georgia,serif;
   color: #513530;
 }
 .letter-names {
-  display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
-  gap: .2em .35em; margin: .55em 0; color: var(--wine);
-  font: 500 clamp(2.25rem,4.8vw,5.8rem)/1.05 'Cormorant Garamond',Georgia,serif;
+  display: grid; gap: .08em; margin: .38em 0; color: var(--wine);
+  font: 500 clamp(2.6rem,4.55vw,5.6rem)/1.05 'Cormorant Garamond',Georgia,serif;
 }
 .letter-names strong { font-weight: inherit; }
-.letter-names span { font: italic .4em Georgia,serif; }
-.family-letter .family-detail { margin-top: 1.7rem; font-size: clamp(.85rem,1.25vw,1.16rem); }
-.family-detail::before { content: ""; display: block; width: 3.25rem; border-top: 1px solid #a7835c; margin: 0 auto 1rem; }
-.grandparent-pair { display: block; white-space: nowrap; }
+.letter-names span { display: flex; align-items: center; gap: .7em; font: italic .38em Georgia,serif; }
+.letter-names span::before { content: ""; width: 1.8em; border-top: 1px solid #a7835c; }
+.family-letter .family-detail { margin-top: 1.5rem; max-width: 62ch; font-size: clamp(.9rem,1.15vw,1.15rem); }
+.family-detail::before { content: ""; display: block; width: 3.25rem; border-top: 1px solid #a7835c; margin-bottom: .8rem; }
+.grandparent-pair { display: block; text-wrap: balance; }
 @media (max-width: 760px) {
-  .letter-names { flex-direction: column; align-items: center; gap: .12em; }
+  .family-letter { display: block; }
+  .letter-masthead { display: grid; grid-template-columns: 1fr auto; align-items: center; padding: 0 0 1rem; }
+  .letter-postage { grid-area: 1 / 2 / 3 / 3; padding-right: .9rem; }
+  .portrait-stamp { width: 4.6rem; }
+  .postmark { width: 2.5rem; right: 0; }
+  .family .letter-masthead h2 { margin: 0; font-size: clamp(2.6rem, 8vw, 4rem); }
+  .letter-masthead time { align-self: start; }
+  .letter-masthead h2 em { display: inline; }
+  .invitation-copy { padding: 1.6rem 0 0; }
+  .letter-names { font-size: clamp(2.05rem, 8.5vw, 3.7rem); margin-block: .55em; }
 }
 .closing.section {
   padding-block: clamp(1.5rem, 4svh, 3rem);
@@ -479,6 +519,13 @@ html.invitation-covered .petal-layer { display: none; }
 @keyframes seal-glint { from { transform: translateX(-120%); } to { transform: translateX(120%); } }
 @keyframes link-ring { from { transform: translateX(var(--ring-start)); opacity: .25; } to { transform: none; opacity: 1; } }
 @keyframes draw-rule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: no-preference) {
+  .letter-masthead.show .postmark { animation: stamp-letter .65s .18s ease-out both; }
+}
+@keyframes stamp-letter {
+  from { transform: translateY(-.4rem) rotate(-8deg) scale(1.18); opacity: 0; }
+  to { transform: rotate(-14deg); opacity: .76; }
+}
 @media (max-height: 500px) {
   .cover-prayer { top: 7%; }
   .cover-prayer small { margin-top: 0; }
@@ -640,22 +687,11 @@ html.invitation-covered .petal-layer { display: none; }
   .day-sheet .countdown { padding-block: 1rem; }
 }
 @media (max-width: 650px) {
-  .invitation-copy { text-align: left; padding-top: 1.65rem; }
-  .invitation-copy .family-text, .invitation-copy .family-detail { margin-inline: 0; }
-  .invitation-copy .letter-names {
-    align-items: flex-start;
-    border-left: 2px solid #bd9864;
-    padding-left: .42em;
-    margin-block: .65em;
-    line-height: 1.12;
-  }
-  .invitation-copy .chapter { letter-spacing: .12em; }
-  .family-detail::before { margin-left: 0; }
   .day-month { max-width: 8ch; }
 }
 @media (max-width: 360px) {
   .day-calendar .day-number { font-size: 5.25rem; }
   .day-calendar .day-month { font-size: 1.3rem; }
   .day-calendar .hijri-date { font-size: .93rem; }
-  .invitation-copy .letter-names { font-size: 2rem; }
+
 }
