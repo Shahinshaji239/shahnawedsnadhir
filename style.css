@@ -516,12 +516,36 @@ html.invitation-covered .petal-layer { display: none; }
   background: radial-gradient(ellipse at 28% 24%, #69374b, transparent 56%), #352235;
 }
 .day-sky {
+  position: relative;
   display: grid;
   align-content: center;
   padding: 4rem clamp(2rem, 5vw, 7rem) clamp(10rem, 19vw, 20rem);
   background: url("assets/rajab-night.webp") center bottom / 100% auto no-repeat;
   text-align: left;
 }
+.night-scene {
+  position: absolute;
+  inset: auto 0 0;
+  aspect-ratio: 3 / 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.night-moon { position: absolute; left: 76.6667%; top: 21.25%; width: 5.75%; height: auto; }
+.night-scene::before, .night-scene::after {
+  content: ""; position: absolute; inset: 0; background-size: 100% 100%;
+}
+.night-scene::before { background-image: url("assets/rajab-stars-a.webp"); }
+.night-scene::after { background-image: url("assets/rajab-stars-b.webp"); }
+@media (prefers-reduced-motion: no-preference) {
+  .night-scene.is-visible .night-moon { animation: moonrise 2.8s cubic-bezier(.2,.65,.25,1) both; }
+  .night-scene.is-visible::before { animation: starlight 4.6s ease-in-out infinite alternate; }
+  .night-scene.is-visible::after { animation: starlight 6.2s -3s ease-in-out infinite alternate-reverse; }
+}
+@keyframes moonrise {
+  from { transform: translateY(200%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes starlight { from { opacity: .3; } to { opacity: 1; } }
 .celebration .day-heading h2 {
   margin: 0 0 .45em;
   font-size: clamp(3rem, 6vw, 7rem);

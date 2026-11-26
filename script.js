@@ -157,6 +157,11 @@ opening.addEventListener('lostpointercapture', cancelGesture);
 openButton.addEventListener('click', openInvitation);
 
 if ('IntersectionObserver' in window) {
+  const skyObserver = new IntersectionObserver(([entry]) => {
+    entry.target.classList.toggle('is-visible', entry.isIntersecting);
+  });
+  skyObserver.observe(document.querySelector('.night-scene'));
+
   const observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
