@@ -531,6 +531,38 @@ html.invitation-covered .petal-layer { display: none; }
 .day-sheet .countdown small { font-size: clamp(.65rem,1vw,.78rem); }
 @media (max-width: 650px) {
   .day-details { grid-template-columns: 1fr; gap: 1.8rem; }
-  .day-calendar time { width: fit-content; }
+  .day-calendar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+  .day-calendar time { width: fit-content; column-gap: clamp(.4rem, 2vw, 1rem); }
+  .day-calendar .hijri-date {
+    margin: 0;
+    padding-left: .6rem;
+    border-left: 1px solid #d7aa7d70;
+    text-align: right;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .hijri-date span { display: block; }
+  .invitation-copy { text-align: left; padding-top: 1.65rem; }
+  .invitation-copy .family-text, .invitation-copy .family-detail { margin-inline: 0; }
+  .invitation-copy .letter-names {
+    align-items: flex-start;
+    border-left: 2px solid #bd9864;
+    padding-left: .42em;
+    margin-block: .65em;
+    line-height: 1.12;
+  }
+  .invitation-copy .chapter { letter-spacing: .12em; }
+  .family-detail::before { margin-left: 0; }
   .day-month { max-width: 8ch; }
+}
+@media (max-width: 360px) {
+  .day-calendar .day-number { font-size: 5.25rem; }
+  .day-calendar .day-month { font-size: 1.3rem; }
+  .day-calendar .hijri-date { font-size: .93rem; }
+  .invitation-copy .letter-names { font-size: 2rem; }
 }
